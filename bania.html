@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bania</title>
+<!--
+Bania - A minimalist web-app for safe drinking habits
+Official url: https://dataswamp.org/~lich/bania/
+Github repo: https://github.com/lich-tex/bania
+Licensed under the MIT license - http://opensource.org/licenses/MIT
+Copyright (c) 2020 Mikolaj "lich" H.
+-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="data:image/x-icon;base64,AAABAAEAEBAQAAAAAAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIyMjAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAIgAAAAAAAAAiAAAAAAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAD8PwAA/D8AAPw/AAD8PwAA/D8AAPw/AAD8PwAA/D8AAPw/AAD8PwAA/D8AAP5/AAD+fwAA/n8AAP5/AAD+fwAA" rel="icon" type="image/x-icon" />
+    <script language="JavaScript">
+<!--
+function calculateBania(){
+  var name=document.baniaForm.name.value
+  var volume=parseFloat(document.baniaForm.volume.value.replace(',','.').replace(' ',''))
+  var price=parseFloat(document.baniaForm.price.value.replace(',','.').replace(' ',''))
+  var alc_con=parseFloat(document.baniaForm.alc_con.value.replace(',','.').replace(' ',''))
+  var unit=(volume*(alc_con/1000))
+  var priceperunit=price/unit
+  if (priceperunit>-1) {
+    var table=document.getElementById("results");
+    unit=String(unit.toFixed(1)).bold()
+    priceperunit=String(priceperunit.toFixed(2)).bold()
+    var row = table.insertRow(1);
+    var cell0 = row.insertCell(0);
+    var cell1 = row.insertCell(1);
+    var cell2 = row.insertCell(2);
+    var cell3 = row.insertCell(3);
+    var cell4 = row.insertCell(4);
+    var cell5 = row.insertCell(5);
+    cell0.innerHTML = name;
+    cell1.innerHTML = unit; 
+    cell2.innerHTML = priceperunit;
+    cell3.innerHTML = price;
+    cell4.innerHTML = volume; 
+    cell5.innerHTML = alc_con; 
+    } else {    
+    alert('There is something wrong with the input.')
+  }
+  document.getElementById("baniaForm").reset();
+}
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("results");
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      var testX=x.innerHTML.replace('+','').replace('(','').replace(')','').replace('%','')
+      var testY=y.innerHTML.replace('+','').replace('(','').replace(')','').replace('%','')
+      var cmpX=isNaN(parseFloat(testX))?testX.toLowerCase():parseFloat(testX);
+      var cmpY=isNaN(parseFloat(testY))?testY.toLowerCase():parseFloat(testY);
+      if (dir == "asc") {
+        if (cmpX > cmpY) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (cmpX < cmpY) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+function download_table_as_csv(table_id) {
+  // Select rows from table_id
+  var rows = document.querySelectorAll('table#' + table_id + ' tr');
+  // Construct csv
+  var csv = [];
+  for (var i = 0; i < rows.length; i++) {
+    var row = [], cols = rows[i].querySelectorAll('td, th');
+    for (var j = 0; j < cols.length; j++) {
+      var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+      data = data.replace(/"/g, '""');
+      row.push('"' + data + '"');
+    }
+    csv.push(row.join(';'));
+  }
+  var csv_string = csv.join('\n');
+  // Download it
+  var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+  var link = document.createElement('a');
+  link.style.display = 'none';
+  link.setAttribute('target', '_blank');
+  link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+window.onbeforeunload = function() {
+  return "If the data won't be saved it will be lost.";
+};
+// -->    </script>
+<style>
+form {
+  width:100%;
+  clear:both;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+tr:nth-of-type(odd) {
+  background:#eee;
+}
+th {
+  background:#333;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+th:hover {
+  background:#777;
+}
+th:active {
+  background:#999;
+}
+td,th {
+  padding:6px;
+  border:1px solid #ccc;
+  text-align:left;
+}
+input {
+  width:100%;
+  clear:both;
+  padding:12px 20px;
+  margin:8px0;
+  box-sizing:border-box;
+}
+input:active;
+ {
+  background:#eee;
+}
+input#button {
+  text-transform:uppercase;
+  padding:15px 15px;
+  margin:2px 0;
+  font-weight:bold;
+  font-size:16px;
+  font-size:4vw;
+  background:yellow;
+}
+input#button:hover {
+  background:orange;
+}
+input#button:active {
+  background:orangered;
+}
+@media(prefers-color-scheme:dark) {
+  body {
+    background-color:#000;
+    color:#ccc;
+  }
+  a {
+    color:#fff;
+  }
+  input {
+    color:#fff;
+    background-color:#000;
+  }
+}
+
+</style>
+</head>
+<body>
+    <p><a href="../donate/">Donate if you wish to support this and other projects.</a>
+    <form name="baniaForm" id="baniaForm">
+    Name:<input type="text" name="name" size="10"> <br/>
+    Volume:<input type="text" name="volume" size="10"> <br/>
+    Price:<input type="text" name="price" size="10"> <br/>
+    Alcohol content:<input type="text" name="alc_con" size="10"> <br/>
+    <input id="button" type="button" value="Calculate" onclick="calculateBania()"> <br/>
+    </form>
+    <table id="results">
+    <tbody>
+    <tr>
+    <th onclick="sortTable(0)">
+    Name
+    </th>
+    <th onclick="sortTable(1)">
+    Units of alcohol
+    </th>
+    <th onclick="sortTable(2)">
+    Price per unit
+    </th>
+    <th onclick="sortTable(3)">
+    Price
+    </th>
+    <th onclick="sortTable(4)">
+    Volume
+    </th>
+    <th onclick="sortTable(5)">
+    Alcohol content
+    </th>
+    </tr>
+    </tbody>
+    </table> <br/>
+<a href="#" onclick="download_table_as_csv('results');">Export the results to CSV. </a></br><a href="https://github.com/lich-tex/bania">Contribute on Github.</a>
+</body>
+</html>
