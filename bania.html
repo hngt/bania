@@ -205,9 +205,9 @@ input#button:active {
     <p><a href="../donate/">Donate if you wish to support this and other projects.</a>
     <form name="baniaForm" id="baniaForm">
     Name:<input type="text" name="name" size="10"> <br/>
-    Volume:<input type="text" name="volume" size="10"> <br/>
+    Volume (ml):<input type="text" name="volume" size="10"> <br/>
     Price:<input type="text" name="price" size="10"> <br/>
-    Alcohol content:<input type="text" name="alc_con" size="10"> <br/>
+    Alcohol content (%):<input type="text" name="alc_con" size="10"> <br/>
     <input id="button" type="button" value="Calculate" onclick="calculateBania()"> <br/>
     </form>
     <table id="results">
@@ -226,10 +226,10 @@ input#button:active {
     Price
     </th>
     <th onclick="sortTable(4)">
-    Volume
+    Volume (ml)
     </th>
     <th onclick="sortTable(5)">
-    Alcohol content
+    Alcohol content (%)
     </th>
     </tr>
     </tbody>
